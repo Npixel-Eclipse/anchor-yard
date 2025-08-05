@@ -1,0 +1,16 @@
+[package]
+name = "anchor-yard"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anchor-yard-macros = { path = "../anchor-yard-macros" }
+anchor-yard-core = { path = "../anchor-yard-core" }
+
+[dev-dependencies]
+shipyard = { workspace = true }
+serde = { workspace = true }
+
+[[example]]
+name = "basic_usage"
+required-features = []

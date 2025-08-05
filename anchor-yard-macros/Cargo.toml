@@ -1,0 +1,12 @@
+[package]
+name = "anchor-yard-macros"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { workspace = true, features = ["full"] }
+quote = { workspace = true }
+serde = { workspace = true, features = ["derive" ] }

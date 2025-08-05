@@ -1,0 +1,12 @@
+[package]
+name = "anchor-yard-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+shipyard = { workspace = true, features = ["serde1", "proc"] }
+serde = { workspace = true, features = ["derive" ] }
+bytes = { workspace = true }
+anyhow = { workspace = true }
+bincode = { workspace = true, features = ["serde"] }
+once_cell = { workspace = true }
