@@ -2,6 +2,11 @@
 name = "anchor-yard"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+repository = "https://github.com/Npixel-Eclipse/anchor-yard"
+keywords = ["shipyard", "ecs", "performance", "profiling", "snapshot"]
+categories = ["profiling", "game-development"]
+description = "A simple and effective performance profiling and world snapshot tool for the shipyard ECS framework."
 
 [dependencies]
 anchor-yard-macros = { path = "../anchor-yard-macros" }

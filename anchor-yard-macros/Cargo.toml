@@ -2,6 +2,9 @@
 name = "anchor-yard-macros"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+repository = "https://github.com/Npixel-Eclipse/anchor-yard"
+description = "Procedural macros for Anchor-Yard."
 
 [lib]
 proc-macro = true
