@@ -48,7 +48,11 @@ pub fn snapshot_system(args: TokenStream, input: TokenStream) -> TokenStream {
                     stringify!(#fn_name),
                     elapsed.as_millis() as u64
                 ) {
+                    #[cfg(feature = "tracing")]
+                    tracing::info!("System '{}' took {}ms (threshold: {}ms). Saving snapshot...", stringify!(#fn_name), elapsed.as_millis(), #threshold_ms);
                     let _ = snapshot.save_to_file();
+                    #[cfg(feature = "tracing")]
+                    tracing::info!("Snapshot saved!");
                 }
             }
 

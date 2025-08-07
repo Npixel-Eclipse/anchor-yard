@@ -1,6 +1,6 @@
 [package]
 name = "anchor-yard"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/Npixel-Eclipse/anchor-yard"
@@ -9,8 +9,8 @@ categories = ["development-tools", "development-tools::profiling", "game-develop
 description = "A simple and effective performance profiling and world snapshot tool for the shipyard ECS framework."
 
 [dependencies]
-anchor-yard-macros = { path = "../anchor-yard-macros", version = "0.1.0" }
-anchor-yard-core = { path = "../anchor-yard-core", version = "0.1.0" }
+anchor-yard-macros = { path = "../anchor-yard-macros", version = "0.1" }
+anchor-yard-core = { path = "../anchor-yard-core", version = "0.1" }
 
 [dev-dependencies]
 shipyard = { workspace = true }
@@ -19,3 +19,6 @@ serde = { workspace = true }
 [[example]]
 name = "basic_usage"
 required-features = []
+
+[features]
+tracing = ["anchor-yard-macros/tracing"]
