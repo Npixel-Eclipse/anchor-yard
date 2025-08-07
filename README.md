@@ -6,7 +6,6 @@ This README is available in English and Korean.
 
 # Anchor Yard
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/your-repo/rust.yml?branch=main)](https://github.com/your-repo/actions)
 [![Crates.io](https://img.shields.io/crates/v/anchor-yard.svg)](https://crates.io/crates/anchor-yard)
 [![Docs.rs](https://docs.rs/anchor-yard/badge.svg)](https://docs.rs/anchor-yard)
 
