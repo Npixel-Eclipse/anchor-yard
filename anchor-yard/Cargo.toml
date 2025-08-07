@@ -9,8 +9,8 @@ categories = ["profiling", "game-development"]
 description = "A simple and effective performance profiling and world snapshot tool for the shipyard ECS framework."
 
 [dependencies]
-anchor-yard-macros = { path = "../anchor-yard-macros" }
-anchor-yard-core = { path = "../anchor-yard-core" }
+anchor-yard-macros = { path = "../anchor-yard-macros", version = "0.1.0" }
+anchor-yard-core = { path = "../anchor-yard-core", version = "0.1.0" }
 
 [dev-dependencies]
 shipyard = { workspace = true }
