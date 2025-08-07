@@ -1,6 +1,6 @@
 [package]
 name = "anchor-yard-macros"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2024"
 license = "MIT"
 repository = "https://github.com/Npixel-Eclipse/anchor-yard"
@@ -13,6 +13,7 @@ proc-macro = true
 syn = { workspace = true, features = ["full"] }
 quote = { workspace = true }
 serde = { workspace = true, features = ["derive" ] }
+shipyard = { workspace = true, features = ["serde1"] }
 tracing = { version = "0.1.41", optional = true }
 
 [features]

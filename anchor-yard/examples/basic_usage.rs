@@ -1,6 +1,6 @@
 use anchor_yard::{REGISTRY, WorldSnapshotExt, snapshot_system};
 use serde::{Deserialize, Serialize};
-use shipyard::{Component, IntoIter, View, ViewMut, Workload, World};
+use shipyard::{Component, IntoIter, IntoWorkload, View, ViewMut, World};
 
 #[derive(Component, Serialize, Deserialize, Debug)]
 struct Position {
@@ -19,7 +19,7 @@ struct Health {
     points: i32,
 }
 
-#[snapshot_system(threshold_ms = 0)]
+#[snapshot_system(threshold_ms = 10)]
 fn fast_physics_system(mut positions: ViewMut<Position>, velocities: View<Velocity>) {
     for (pos, vel) in (&mut positions, &velocities).iter() {
         pos.x += vel.x;
@@ -27,7 +27,7 @@ fn fast_physics_system(mut positions: ViewMut<Position>, velocities: View<Veloci
     }
 }
 
-#[snapshot_system(threshold_ms = 0)]
+#[snapshot_system(threshold_ms = 4)]
 fn slow_combat_system(mut healths: ViewMut<Health>, positions: View<Position>) {
     for (health, pos) in (&mut healths, &positions).iter() {
         std::thread::sleep(std::time::Duration::from_millis(5));
@@ -38,7 +38,7 @@ fn slow_combat_system(mut healths: ViewMut<Health>, positions: View<Position>) {
     }
 }
 
-#[snapshot_system(threshold_ms = 0)]
+#[snapshot_system(threshold_ms = 9)]
 fn heavy_ai_system(positions: View<Position>, healths: View<Health>) {
     std::thread::sleep(std::time::Duration::from_millis(10));
 
@@ -77,32 +77,10 @@ fn main() {
 
     println!("Created 100 entities\n");
 
-    // 개별 시스템 실행 테스트
-    println!("=== Testing Individual Systems ===");
-
-    println!("Running fast_physics_system (should NOT create snapshot)...");
-    world.run_with_snapshot(|| world.run(fast_physics_system));
-
-    println!("Running slow_combat_system (should create snapshot)...");
-    world.run_with_snapshot(|| world.run(slow_combat_system));
-
-    println!("Running heavy_ai_system (should create snapshot)...");
-    world.run_with_snapshot(|| world.run(heavy_ai_system));
-
-    println!("\n=== Testing Workload ===");
-
-    // Workload 생성 및 실행
-    Workload::new("game_loop")
-        .with_system(fast_physics_system)
-        .with_system(slow_combat_system)
-        .with_system(heavy_ai_system)
-        .add_to_world(&world)
-        .unwrap();
-
-    println!("Running complete workload...");
-    if let Err(e) = world.run_workload_with_snapshot("game_loop") {
-        eprintln!("Workload failed: {}", e);
-    }
+    println!("=== Running workload ===");
+    let workload = (fast_physics_system, slow_combat_system, heavy_ai_system).into_workload();
+    world.add_workload(|| workload);
+    world.run_default_workload_with_snapshot().unwrap();
 
     println!("\n=== Snapshot Files Created ===");
 
@@ -125,32 +103,3 @@ fn main() {
     println!("\n✅ Demo completed! Check the 'snapshots' folder for captured system states.");
     println!("💡 Tip: Run with 'cargo run --example basic_usage' to see this demo");
 }
-
-// #[test]
-// fn load_snapshot() {
-//     let mut registry = REGISTRY.lock().unwrap();
-//     registry.register::<Position>();
-//     registry.register::<Velocity>();
-//     registry.register::<Health>();
-//     drop(registry);
-
-//     let snapshot = anchor_yard::SystemSnapshot::load_from_file(std::path::Path::new(
-//         "snapshots/slow_combat_system_1754386748.snapshot",
-//     ))
-//     .unwrap();
-//     let world = snapshot.restore_world().unwrap();
-
-//     let positions = world.borrow::<View<Position>>().unwrap();
-//     let velocities: View<'_, Velocity, shipyard::track::Untracked> =
-//         world.borrow::<View<Velocity>>().unwrap();
-//     let healths = world.borrow::<View<Health>>().unwrap();
-//     println!("positions: {:?}", positions);
-//     println!("velocities: {:?}", velocities);
-//     println!("healths: {:?}", healths);
-//     for (pos, vel, health) in (&positions, &velocities, &healths).iter() {
-//         println!(
-//             "Position: {:?}, Velocity: {:?}, Health: {:?}",
-//             pos, vel, health
-//         );
-//     }
-// }
